@@ -1,6 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import CarFounction from './Car.js';
+import {useState} from 'react';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from "./pages/Layout";
+import Home from "./pages/Home";
+import Blogs from "./pages/Blog";
+import Contact from "./pages/Contact";
+import NoPage from "./pages/NoPages";
+
+
+export default function AppPages() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+           <Route index element = {<Home />}/>
+           <Route path ="blogs" element = {<Blogs />}/>
+           <Route path="contact" element = {<Contact/>}/>
+           <Route path="*" element = {<NoPage/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
 
 // const helloElement = <h1>Hello react!</h1>
 
@@ -140,4 +165,123 @@ class Child extends React.Component {
   }
 }
 
-root.render(<Container/>);
+function Football() {
+  const shoot = (a) => {
+    alert(a);
+  }
+  return (
+    <button onClick = {shoot("goal")}>Take the shot!</button>
+  );
+}
+
+function CarOne(props) {
+  return <li> I am a {props.brand}</li>;
+}
+
+function GarageOne() {
+    const cars = [
+              {id: 1, brand:'Ford'},
+              {id: 2,  brand:'BMW'}
+    ];
+  return (
+    <>
+      <h1>Who lives in my garage?</h1>
+      <ul>
+        {cars.map((car) => <CarOne key={car.id} brand = {car.brand}/>)}
+      </ul>
+    </>
+  )
+}
+
+//form
+function MyForm() {
+  const [name, setName] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert(`The name you entered was:${name}`);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>Enter your name:
+        <input type="text" 
+                value = {name}
+                onChange = {(e)=>setName(e.target.value)}
+        />
+      </label>
+    </form>
+  )
+}
+
+//FormTwo 
+function MyFormTwo() {
+  const [inputs, setInputs] = useState({});
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs(values => ({...values, [name]:value}))
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert(inputs);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>Enter your name:
+        <input
+          type = "text"
+          name = "username"
+          value = {inputs.username || ""}
+          onChange = {handleChange}
+          />
+      </label> Enter your age:
+      <label>
+      <input 
+        type = "number"
+        name = "age"
+        value = {inputs.age || ""}
+        onChange={handleChange}
+        />
+        </label>
+      <input type = "submit" />
+    </form>
+  )
+}
+
+// textarea
+function MyTextarea() {
+  const [textarea, setTextarea] = useState(
+    "The content of a textarea goes in the value attribute"
+  );
+  const handleChange = (event) => {
+    setTextarea(event.target.value)
+  }
+  return (
+    <form>
+      <textarea value = {textarea} onChange = {handleChange} />
+    </form>
+  )
+}
+
+//Selection
+function MySelection() {
+  const [myCar, setMyCar] = useState("volvo");
+  const handleChange = (event) => {
+    setMyCar(event.target.value)
+  }
+  return (
+    <form>
+      <select value = {myCar} onChange = {handleChange}>
+        <option value = "Ford">Ford</option>
+        <option value="Volvo">Volvo</option>
+        <option value="Fiat">Fiat</option>
+      </select>
+    </form>
+  )
+}
+
+root.render(<AppPages/>);
