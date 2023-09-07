@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import CarFounction from './Car.js';
 import {useState} from 'react';
+import Todos from "./Todos.js";
+import './App.css';
+import './my-sass.scss';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from "./pages/Layout";
@@ -26,6 +29,24 @@ export default function AppPages() {
   );
 }
 
+//React Memo
+const App = () => {
+  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState(["todo 1","todo 2"]);
+  const increment = () => {
+    setCount((c) => c + 1);
+  } 
+  return (
+    <>
+      <Todos todos = {todos} />
+      <hr />
+      <div>
+       Count: {count}
+        <button onClick={increment}>+</button>
+      </div>
+  </>
+)
+};
 
 // const helloElement = <h1>Hello react!</h1>
 
@@ -284,4 +305,50 @@ function MySelection() {
   )
 }
 
-root.render(<AppPages/>);
+
+//react Hook
+//allows function compnents to have asscess to state and other react features.
+function Favoritecolor() {
+  const [color, setColor] = useState("red");
+  return (
+    <>  
+      <h1>My favorite color is {color}!</h1>
+      <button
+        type = "button"
+        onClick = {() => setColor("blue")}
+        >Blue</button>
+        <button type = "button"
+        onClick = {() => setColor("red")}
+        >Red</button>
+    </>
+  )
+}
+
+function CarState() {
+  const [car, setCar] = useState({
+    brand: "Ford",
+    model: "Mustang",
+    year: "1964",
+    color: "red"
+  })
+  
+  const updateColor = () => {
+    setCar(previousState => {
+      return {...previousState, color:"blue"}
+    });
+  }
+  return(
+    <>
+      <h1>My {car.brand}</h1>
+      <p>
+        It is a {car.color} {car.model} from {car.year}.
+      </p>
+      <button type = "button" onClick={updateColor}>Blue</button>
+    </>
+  )
+}
+
+
+
+
+root.render(<CarState/>);
