@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import CarFounction from './Car.js';
-import {useState} from 'react';
 import Todos from "./Todos.js";
 import './App.css';
 import './my-sass.scss';
+
+import {useState,useEffect,useRef} from "react";
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from "./pages/Layout";
@@ -348,7 +349,24 @@ function CarState() {
   )
 }
 
+function AppOne() {
+  const [inputValue, setInputValue] = useState("");
+  const count = useRef(0);
 
+  useEffect(() => {
+    count.current = count.current + 1;
+  })
 
+  return (
+    <>
+      <input  
+        type = "text"
+        value = {inputValue}
+        onChange = {(e) => setInputValue(e.target.value)}
+        />
+        <h1>Render count:{count.current}</h1>
+    </>
+  )
+}
 
-root.render(<CarState/>);
+root.render(<AppOne/>);
